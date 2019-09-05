@@ -1,4 +1,4 @@
-package ccmap
+package syncmap
 
 import (
 	"math/rand"
