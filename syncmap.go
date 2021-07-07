@@ -92,24 +92,17 @@ func (m *SyncMap) GetShards() []*ShardMap {
 
 func (m *SyncMap) Get(key string) (value interface{}, ok bool) {
 	shard := m.locate(key)
-	shard.RLock()
-	value, ok = shard.items[key]
-	shard.RUnlock()
-	return
+	return shard.GetWithLock(key)
 }
 
 func (m *SyncMap) Set(key string, value interface{}) {
 	shard := m.locate(key)
-	shard.Lock()
-	shard.items[key] = value
-	shard.Unlock()
+	shard.SetWithLock(key, value)
 }
 
 func (m *SyncMap) Delete(key string) {
 	shard := m.locate(key)
-	shard.Lock()
-	delete(shard.items, key)
-	shard.Unlock()
+	shard.DeleteWithLock(key)
 }
 
 func (m *SyncMap) Pop() (string, interface{}) {
